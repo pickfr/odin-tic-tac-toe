@@ -16,7 +16,13 @@ const gameboard = (function () {
 
     const dropToken = (x, y, playerToken) => board[x][y].addToken(playerToken);
 
-    return { getBoard, dropToken};
+    // Temporary board renderer
+    const printBoard = () => {
+        let extractedBoardValues = board.map((row) => row.map(cell => cell.getValue()))
+        console.log(extractedBoardValues);
+    }
+
+    return { getBoard, dropToken, printBoard};
 
 }());
 

@@ -1,6 +1,8 @@
 const gameboard = () => {
 
     const boardsize = 3;
+    const maxRounds = boardsize*boardsize;
+    let currentRound = 0;
 
     let board = [];
 
@@ -16,6 +18,7 @@ const gameboard = () => {
     const dropToken = (x, y, playerToken) => {
         if (board[x][y].getValue() === 0) {
             board[x][y].addToken(playerToken);
+            currentRound++;
             console.log(`Adding ${playerController().getCurrentPlayer().name}'s marker into square: ${x}, ${y}`);
             checkWinner(x,y,playerToken);
             return true;
@@ -27,6 +30,11 @@ const gameboard = () => {
     }
 
     const checkWinner = (x, y, checkForPlayer) => {
+
+        //Check for tie
+        if(currentRound >= maxRounds){
+            console.log("Tie!")
+        }
 
         //check rows
         for (i = 0; i < boardsize; i++) {
@@ -64,6 +72,8 @@ const gameboard = () => {
                 console.log("Winner found on the diagonal - NE")
             }
         }
+
+ 
     }
 
 
@@ -112,9 +122,7 @@ function playerController(
     let currentPlayer = players[0];
 
     const switchActivePlayer = () => {
-        console.log(currentPlayer)
         currentPlayer = getCurrentPlayer() === players[0] ? players[1] : players[0]
-        console.log(currentPlayer)
     }
 
     const getCurrentPlayer = () => currentPlayer;
@@ -124,7 +132,7 @@ function playerController(
         if (board.dropToken(x, y, getCurrentPlayer().token)) {
 
             board.printBoard();
-            //switchActivePlayer();
+            switchActivePlayer();
         }
 
     }

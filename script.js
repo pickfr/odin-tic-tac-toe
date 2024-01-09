@@ -15,11 +15,12 @@ const gameboard = () => {
 
     const getBoard = () => board;
 
+    const getBoardSize = () => boardsize;
+
     const dropToken = (x, y, playerToken) => {
         if (board[x][y].getValue() === 0) {
             board[x][y].addToken(playerToken);
             currentRound++;
-            console.log(`Adding ${playerController().getCurrentPlayer().name}'s marker into square: ${x}, ${y}`);
             checkWinner(x,y,playerToken);
             return true;
         } else {
@@ -83,7 +84,7 @@ const gameboard = () => {
         console.log(extractedBoardValues);
     }
 
-    return { getBoard, dropToken, printBoard };
+    return { getBoard, getBoardSize, dropToken, printBoard };
 
 };
 
@@ -105,6 +106,8 @@ function playerController(
 ) {
 
     const board = gameboard();
+
+    const getBoard = () => board;
 
 
     const players = [
@@ -130,18 +133,44 @@ function playerController(
     const playRound = (x, y) => {
 
         if (board.dropToken(x, y, getCurrentPlayer().token)) {
-
-            board.printBoard();
             switchActivePlayer();
         }
 
     }
 
 
-    return { getCurrentPlayer, playRound, switchActivePlayer}
+    return { getCurrentPlayer, playRound, switchActivePlayer, getBoard}
 
 
 
 }
 
-game = playerController();
+function screenController() {
+    const pc = playerController();
+    const container = document.getElementById(`game-container`);
+
+    const getPC = () => pc;
+
+    const makeElements = () => {
+        // Gameboard
+        const gameBoardElement = document.createElement("div");
+        gameBoardElement.setAttribute("id", "gameboard");
+        container.appendChild(gameBoardElement);
+        
+
+        //Cells
+        for(i=0; i<pc.getBoard().getBoardSize(); i++){
+            for(j=0; j<pc.getBoard().getBoardSize(); j++){
+                const cellElement = document.createElement("div");
+                cellElement.setAttribute("data",`${i} ${j}`);
+                gameBoardElement.appendChild(cellElement);
+                cellElement.textContent = pc.getBoard().getBoard()[i][j].getValue();               
+            }
+        }
+    }
+
+
+    return{makeElements, getPC};
+}
+
+const game = screenController();

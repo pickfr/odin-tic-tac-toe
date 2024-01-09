@@ -46,6 +46,8 @@ const gameboard = () => {
                 console.log("Winner found on the vertical")
             }
         }
+
+        //check diagonal down??
     }
 
 
@@ -79,7 +81,7 @@ function playerController(
     const board = gameboard();
 
 
-    players = [
+    const players = [
         {
             name: playerOneName,
             token: 1
@@ -94,7 +96,9 @@ function playerController(
     let currentPlayer = players[0];
 
     const switchActivePlayer = () => {
-        currentPlayer = currentPlayer === players[0] ? players[1] : players[0]
+        console.log(currentPlayer)
+        currentPlayer = getCurrentPlayer() === players[0] ? players[1] : players[0]
+        console.log(currentPlayer)
     }
 
     const getCurrentPlayer = () => currentPlayer;
@@ -110,7 +114,7 @@ function playerController(
     }
 
 
-    return { getCurrentPlayer, playRound }
+    return { getCurrentPlayer, playRound, switchActivePlayer}
 
 
 

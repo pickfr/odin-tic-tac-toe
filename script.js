@@ -1,13 +1,12 @@
 const gameboard = () => {
 
-    const columns = 3;
-    const rows = 3;
+    const boardsize = 3;
 
     let board = [];
 
-    for (i = 0; i < rows; i++) {
+    for (i = 0; i < boardsize; i++) {
         board[i] = [];
-        for (j = 0; j < columns; j++) {
+        for (j = 0; j < boardsize; j++) {
             board[i].push(cell());
         }
     }
@@ -30,24 +29,41 @@ const gameboard = () => {
     const checkWinner = (x, y, checkForPlayer) => {
 
         //check rows
-        for (i = 0; i < rows; i++) {
+        for (i = 0; i < boardsize; i++) {
             if(board[x][i].getValue() !== checkForPlayer) break;
-            if(i === rows-1){
+            if(i === boardsize-1){
                 //Report Win and do scorey stuff
                 console.log("Winner found on the horizontal")
             }
         }
 
         //check column
-        for (i = 0; i < columns; i++) {
+        for (i = 0; i < boardsize; i++) {
             if(board[i][y].getValue() !== checkForPlayer) break;
-            if(i === columns-1){
+            if(i === boardsize-1){
                 //Report Win and do scorey stuff
                 console.log("Winner found on the vertical")
             }
         }
 
-        //check diagonal down??
+        //check diagonal South East/ North West
+        for(i=0; i < boardsize; i++){
+            if(board[i][i].getValue() !== checkForPlayer) break;
+            if(i === boardsize-1){
+                //Report Win and do scorey stuff
+                console.log("Winner found on the diagonal - SE")
+            }
+        }
+
+        //check diagonal North East/ South West
+        for(i=0; i < boardsize; i++){
+            if(board[boardsize-(i+1)][i].getValue() !== checkForPlayer) break;
+
+            if(i === boardsize-1){
+                //Report Win and do scorey stuff
+                console.log("Winner found on the diagonal - NE")
+            }
+        }
     }
 
 
@@ -108,7 +124,7 @@ function playerController(
         if (board.dropToken(x, y, getCurrentPlayer().token)) {
 
             board.printBoard();
-            switchActivePlayer();
+            //switchActivePlayer();
         }
 
     }
